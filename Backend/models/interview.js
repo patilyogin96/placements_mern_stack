@@ -1,14 +1,17 @@
 const mongoose = require("mongoose");
+const Company = require("./company");
 
 const interviewSchema = new mongoose.Schema(
   {
-    company_name: {
+    title: {
       type: String,
       required: true,
     },
+    company: { type: mongoose.Schema.Types.ObjectId, ref: "Company" },
     interview_date: {
       type: Date,
-      required: true,
+      default: Date.now,
+      // required: true,
     },
   },
   {
