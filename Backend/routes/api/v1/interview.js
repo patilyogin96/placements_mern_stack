@@ -5,5 +5,6 @@ const interviewController = require("../../../controllers/api/v1/interview_api")
 
 router.post("/create-interview", interviewController.createInterview);
 router.get("/", interviewController.getAllInterviews);
+router.post("/assign-interview", interviewController.assignInterviewToStudent);
 
 module.exports = router;

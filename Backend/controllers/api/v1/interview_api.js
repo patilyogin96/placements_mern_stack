@@ -19,3 +19,13 @@ exports.getAllInterviews = async (req, res, next) => {
     console.log("NewCreate", newInterview);
   } catch (error) {}
 };
+
+exports.assignInterviewToStudent = async (req, res, next) => {
+  // try {
+  //   let allInterviews = await Interviews.find({}).populate("company").exec();
+
+  //   res.status(200).json(allInterviews)
+
+  //   console.log("NewCreate", newInterview);
+  // } catch (error) {}
+};

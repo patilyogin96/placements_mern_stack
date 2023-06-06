@@ -43,9 +43,11 @@ const studentSchema = new mongoose.Schema(
     ],
     interview_details: [
       {
-        company: {
-          type: String,
+        interview: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Interviews",
         },
+
         interview_date: {
           type: Date,
         },
