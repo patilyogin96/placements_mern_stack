@@ -43,7 +43,7 @@ const studentSchema = new mongoose.Schema(
     ],
     interview_details: [
       {
-        interview_company: {
+        company: {
           type: String,
         },
         interview_date: {
