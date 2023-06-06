@@ -51,6 +51,10 @@ const assignInterviewSchema = new mongoose.Schema(
 );
 
 const Interviews = mongoose.model("Interviews", interviewSchema);
-const AssignInterview = mongoose.model("AssignInterview", assignInterviewSchema);
+const AssignInterview = mongoose.model(
+  "AssignInterview",
+  assignInterviewSchema
+);
 
 module.exports = Interviews;
+module.exports = AssignInterview;
