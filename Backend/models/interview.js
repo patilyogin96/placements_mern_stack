@@ -9,9 +9,10 @@ const interviewSchema = new mongoose.Schema(
     },
     company: { type: mongoose.Schema.Types.ObjectId, ref: "Company" },
     interview_date: {
-      type: Date,
-      default: Date.now,
-      // required: true,
+      // type: Date,
+      // default: Date.now,
+      type: String,
+      required: true,
     },
   },
   {

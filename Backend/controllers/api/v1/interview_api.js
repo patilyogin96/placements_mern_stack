@@ -26,9 +26,12 @@ exports.assignInterviewToStudent = async (req, res, next) => {
     let assignedInterview = await AssignInterview.create(req.body);
 
     let interviewDetails = await AssignInterview.findById(assignedInterview._id)
-      .populate("company")
-      .populate("student")
-      .populate("interview")
+      .populate("company", "_id company_name")
+      .populate(
+        "student",
+        "_id first_name last_name email phone college placement_status course_scores interview_details"
+      )
+      .populate("interview", "_id")
       .exec();
     res.status(200).json(interviewDetails);
     console.log("NewCreate", interviewDetails);
