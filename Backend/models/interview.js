@@ -7,16 +7,13 @@ const interviewSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    company: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Company",
-    },
+    company: { type: mongoose.Schema.Types.ObjectId, ref: "Company" },
     interview_date: {
       // type: Date,
       // default: Date.now,
       type: String,
       required: true,
-    },<<<<<<< HEAD
+    },
   },
   {
     timestamps: true,
@@ -44,20 +41,28 @@ const assignInterviewSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+
+    // title: {
+    //   type: String,
+    //   required: true,
+    // },
+    // company: { type: mongoose.Schema.Types.ObjectId, ref: "Company" },
+    // interview_date: {
+    //   type: Date,
+    //   default: Date.now,
+    //   // required: true,
+    // },
   },
   {
     timestamps: true,
   }
 );
 
+const Interviews = mongoose.model("Interviews", interviewSchema);
 const AssignInterview = mongoose.model(
   "AssignInterview",
   assignInterviewSchema
 );
 
-
-const Interviews = mongoose.model("Interviews", interviewSchema);
-
-module.exports = {Interviews , AssignInterview };
-
-
+module.exports = { Interviews, AssignInterview };
+// module.exports = AssignInterview;
