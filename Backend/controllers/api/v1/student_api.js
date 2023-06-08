@@ -46,3 +46,21 @@ exports.createStudent = async (req, res, next) => {
     }
   } catch (error) {}
 };
+
+exports.getAllStudents = async (req, res, next) => {
+  try {
+    let allStudents = await Student.find({})
+      .populate("interview_details")
+      .exec();
+
+    console.log("Affstudent", allStudents);
+
+    // let allStudents = await Student.find({})
+    //   .populate("interview_details")
+    //   .exec();
+
+    return res.status(200).json(allStudents);
+  } catch (error) {
+    return res.status(400).json(error);
+  }
+};

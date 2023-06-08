@@ -22,7 +22,7 @@ const studentSchema = new mongoose.Schema(
     },
     college: {
       type: String,
-      required: true,
+     
     },
     placement_status: {
       type: Number,
@@ -41,22 +41,16 @@ const studentSchema = new mongoose.Schema(
         },
       },
     ],
-    interview_details: [
-      {
-        interview: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Interviews",
-        },
+    // interview_details: {
+    //   type: Array,
+    //   default: [],
 
-        interview_date: {
-          type: Date,
-        },
-        results: {
-          type: Number,
-        },
-        // pass , fail , onhold , didnt_attempt
-      },
-    ],
+    // },
+    interview_details: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "AssignInterview",
+    },
+
     user_type: {
       type: Number,
       required: true,

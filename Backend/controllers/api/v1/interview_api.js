@@ -1,5 +1,6 @@
-const Interviews = require("../../../models/interview");
-const AssignInterview = require("../../../models/interview");
+const { Interviews, AssignInterview } = require("../../../models/interview");
+// const AssignInterview = require("../../../models/interview");
+const Student = require("../../../models/student");
 exports.createInterview = async (req, res, next) => {
   try {
     let newInterview = await Interviews.create(req.body);
@@ -25,11 +26,20 @@ exports.assignInterviewToStudent = async (req, res, next) => {
   try {
     let assignedInterview = await AssignInterview.create(req.body);
 
+    console.log("AssignIiiiiiii" , assignedInterview);
+
+    await Student.findOneAndUpdate(
+      { _id: req.body.student }, // Assuming the student ID is in req.body.studentId
+      {
+        $set: { interview_details: assignedInterview._id }, // Add the assigned interview to interview_details array
+      }
+    );
+
     let interviewDetails = await AssignInterview.findById(assignedInterview._id)
       .populate("company", "_id company_name")
       .populate(
         "student",
-        "_id first_name last_name email phone college placement_status course_scores interview_details"
+        "_id first_name last_name email phone college placement_status course_scores"
       )
       .populate("interview", "_id")
       .exec();

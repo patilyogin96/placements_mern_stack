@@ -25,14 +25,21 @@ const assignInterviewSchema = new mongoose.Schema(
     student: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Student",
+      required: true,
     },
     company: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Company",
+      required: true,
     },
     interview: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Interviews",
+      ref: "Ass",
+      required: true,
+    },
+    results: {
+      type: Number,
+      default: 0,
     },
 
     // title: {
@@ -57,5 +64,5 @@ const AssignInterview = mongoose.model(
   assignInterviewSchema
 );
 
-module.exports = Interviews;
-module.exports = AssignInterview;
+module.exports = { Interviews, AssignInterview };
+// module.exports = AssignInterview;
