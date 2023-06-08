@@ -60,7 +60,6 @@ exports.getAllStudents = async (req, res, next) => {
           select: "_id title interview_date",
         },
       })
-
       .exec();
 
     // let allStudents = await Student.find({})

@@ -22,7 +22,6 @@ const studentSchema = new mongoose.Schema(
     },
     college: {
       type: String,
-     
     },
     placement_status: {
       type: Number,
