@@ -34,7 +34,7 @@ const assignInterviewSchema = new mongoose.Schema(
     },
     interview: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Ass",
+      ref: "Interviews",
       required: true,
     },
     results: {
