@@ -6,8 +6,6 @@ exports.createInterview = async (req, res, next) => {
     let newInterview = await Interviews.create(req.body);
 
     res.status(201).json(newInterview);
-
-  
   } catch (error) {}
 };
 
@@ -16,17 +14,12 @@ exports.getAllInterviews = async (req, res, next) => {
     let allInterviews = await Interviews.find({}).populate("company").exec();
 
     res.status(200).json(allInterviews);
-
-
   } catch (error) {}
 };
 
 exports.assignInterviewToStudent = async (req, res, next) => {
-
   try {
     let assignedInterview = await AssignInterview.create(req.body);
-
-   
 
     await Student.findOneAndUpdate(
       { _id: req.body.student }, // Assuming the student ID is in req.body.studentId
@@ -44,7 +37,6 @@ exports.assignInterviewToStudent = async (req, res, next) => {
       .populate("interview", "_id")
       .exec();
     res.status(200).json(interviewDetails);
-   
   } catch (error) {
     res.status(200).json(error);
   }
