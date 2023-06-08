@@ -50,7 +50,7 @@ exports.getAllStudents = async (req, res, next) => {
   try {
     let allStudents = await Student.find({})
       .populate({
-        path: "interview_details",
+        path: "interview_details ",
         populate: {
           path: "interview",
           select: "_id title interview_date",
