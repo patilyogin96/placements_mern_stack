@@ -27,11 +27,11 @@ exports.getAllInterviews = async (req, res, next) => {
 exports.assignInterviewToStudent = async (req, res, next) => {
   try {
     let assignedInterview = await AssignInterview.create(req.body);
-      // await Company.findOneAndUpdate({_id:req.body.company} , {$addToSet:})
-      await Student.findOneAndUpdate(
-        { _id: req.body.student },
-        { $addToSet: { interviews: assignedInterview._id } }
-      );
+    // await Company.findOneAndUpdate({_id:req.body.company} , {$addToSet:})
+    await Student.findOneAndUpdate(
+      { _id: req.body.student },
+      { $addToSet: { interviews: assignedInterview._id } }
+    );
 
     await Student.findOneAndUpdate(
       { _id: req.body.student }, // Assuming the student ID is in req.body.studentId
