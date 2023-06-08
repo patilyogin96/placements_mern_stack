@@ -9,10 +9,12 @@ exports.createStudent = async (req, res, next) => {
     });
 
     if (!studentPresent) {
+      const { course_scores, college } = req.body;
       const first_name = req.body.first_name;
       const last_name = req.body.last_name;
       const email = req.body.email;
       const phone = req.body.phone;
+
       const user_type = req.body.user_type;
 
       try {
@@ -21,6 +23,8 @@ exports.createStudent = async (req, res, next) => {
           last_name,
           email,
           phone,
+          course_scores,
+          college,
           user_type,
         });
 
@@ -45,4 +49,14 @@ exports.createStudent = async (req, res, next) => {
       return res.status(200).json(data);
     }
   } catch (error) {}
+};
+
+exports.getAllStudents = async (req, res, next) => {
+  console.log("allstudentd");
+  try {
+    let allStudents = await Student.find({});
+    return res.status(200).json(allStudents);
+  } catch (error) {
+    return res.status(400).json(error);
+  }
 };

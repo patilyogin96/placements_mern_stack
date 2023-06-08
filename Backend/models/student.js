@@ -26,6 +26,7 @@ const studentSchema = new mongoose.Schema(
     },
     placement_status: {
       type: Number,
+      default: 0,
       // 1= placed , 2=not_placed
     },
     course_scores: [
