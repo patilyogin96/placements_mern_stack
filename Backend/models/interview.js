@@ -16,7 +16,7 @@ const interviewSchema = new mongoose.Schema(
       // default: Date.now,
       type: String,
       required: true,
-    },
+    },<<<<<<< HEAD
   },
   {
     timestamps: true,
@@ -28,14 +28,21 @@ const assignInterviewSchema = new mongoose.Schema(
     student: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Student",
+      required: true,
     },
     company: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Company",
+      required: true,
     },
     interview: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Interviews",
+      required: true,
+    },
+    results: {
+      type: Number,
+      default: 0,
     },
   },
   {
@@ -48,7 +55,9 @@ const AssignInterview = mongoose.model(
   assignInterviewSchema
 );
 
+
 const Interviews = mongoose.model("Interviews", interviewSchema);
 
 module.exports = {Interviews , AssignInterview };
+
 

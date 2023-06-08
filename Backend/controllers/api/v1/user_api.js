@@ -67,7 +67,7 @@ exports.registerUser = async (req, res, next) => {
 
 // login functionality of a user
 exports.loginUser = async (req, res, next) => {
-  console.log("ReqBody", req.body);
+
 
   const email = req.body.email;
   const phone = req.body.phone;
@@ -78,7 +78,7 @@ exports.loginUser = async (req, res, next) => {
 
     if (user) {
       let truePassword = await bcrypt.compare(password, user.password);
-      console.log("MathcingPassword", truePassword);
+     
       if (truePassword) {
         const user_state = {
           _id: user._id,

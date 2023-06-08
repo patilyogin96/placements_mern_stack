@@ -1,7 +1,6 @@
 const Student = require("../../../models/student");
 
 exports.createStudent = async (req, res, next) => {
-  console.log("INcommigStudent", req.body);
   try {
     let studentPresent = await Student.findOne({
       email: req.body.email,
@@ -52,9 +51,22 @@ exports.createStudent = async (req, res, next) => {
 };
 
 exports.getAllStudents = async (req, res, next) => {
-  console.log("allstudentd");
   try {
-    let allStudents = await Student.find({});
+    let allStudents = await Student.find({})
+      .populate({
+        path: "interview_details ",
+        populate: {
+          path: "interview",
+          select: "_id title interview_date",
+        },
+      })
+
+      .exec();
+
+    // let allStudents = await Student.find({})
+    //   .populate("interview_details")
+    //   .exec();
+
     return res.status(200).json(allStudents);
   } catch (error) {
     return res.status(400).json(error);
