@@ -51,19 +51,26 @@ exports.createStudent = async (req, res, next) => {
 };
 
 exports.getAllStudents = async (req, res, next) => {
+  console.log("requestQuery", req.query);
+  const searchQuery = req.query.q;
+  const page = req.query.page || 1;
+  const limit = req.query.limit || 10;
   try {
-    let allStudents = await Student.find({})
+    let allStudents = await Student.find({
+      $or: [{ first_name: { $regex: searchQuery, $options: "i" } }],
+    })
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .populate({ path: "placement_status.company", select: "id company_name" })
       .populate({
         path: "interview_details",
-        setect:"interview"
+        setect: "interview",
       })
       .exec();
 
     // let allStudents = await Student.find({})
     //   .populate("interview_details")
     //   .exec();
-
-    console.log("ddd", allStudents);
 
     return res.status(200).json(allStudents);
   } catch (error) {

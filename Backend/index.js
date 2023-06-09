@@ -6,6 +6,7 @@ const db = require("./config/mongoose");
 const bodyParser = require("body-parser");
 const session = require("express-session");
 const routes = require("./routes/index");
+const passportJWT = require('./config/passport-jwt-stratergy')
 
 app.use(
   session({

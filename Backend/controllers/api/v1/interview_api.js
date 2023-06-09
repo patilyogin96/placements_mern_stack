@@ -33,7 +33,9 @@ exports.assignInterviewToStudent = async (req, res, next) => {
     await Student.findOneAndUpdate(
       { _id: req.body.student },
       { $push: { interview_details: assignedInterview } }
-    );
+    )
+      .populate("interview_details.interview")
+      .exec();
 
     let interviewDetails = await AssignInterview.findById(assignedInterview._id)
       .populate("company", "_id company_name")
@@ -56,19 +58,35 @@ exports.updateAssignInterviewToStudent = async (req, res, next) => {
     { _id: id },
     { $set: { results: results } }
   );
-  console.log("CCCCCCCCc", updatedInterview.student);
+  console.log("CCCCCCCCc", updatedInterview);
 
-  let ups = await Student.findOneAndUpdate(
-    { _id: updatedInterview.student, "interview_details._id": new ObjectId(id) },
+  await Student.findOneAndUpdate(
+    {
+      _id: updatedInterview.student,
+      "interview_details._id": new ObjectId(id),
+    },
     {
       $set: {
         "interview_details.$.results": results,
       },
     },
+
     { new: true }
   );
 
-  console.log("jjjjj", ups);
+  await Student.findOneAndUpdate(
+    {
+      _id: updatedInterview.student,
+    },
+    {
+      $set: {
+        "placement_status.results": results,
+        "placement_status.company": updatedInterview.company,
+      },
+    },
+
+    { new: true }
+  );
 
   // try {
   //   let assignedInterview = await AssignInterview.create(req.body);
