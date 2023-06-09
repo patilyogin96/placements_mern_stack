@@ -54,17 +54,16 @@ exports.getAllStudents = async (req, res, next) => {
   try {
     let allStudents = await Student.find({})
       .populate({
-        path: "interview_details ",
-        populate: {
-          path: "interview",
-          select: "_id title interview_date",
-        },
+        path: "interview_details",
+        setect:"interview"
       })
       .exec();
 
     // let allStudents = await Student.find({})
     //   .populate("interview_details")
     //   .exec();
+
+    console.log("ddd", allStudents);
 
     return res.status(200).json(allStudents);
   } catch (error) {

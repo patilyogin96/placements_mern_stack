@@ -24,8 +24,15 @@ const studentSchema = new mongoose.Schema(
       type: String,
     },
     placement_status: {
-      type: Number,
-      default: 0,
+      results: {
+        type: Number,
+        default: 0,
+      },
+      company: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Company",
+      },
+
       // 1= placed , 2=not_placed
     },
     course_scores: [
@@ -41,14 +48,10 @@ const studentSchema = new mongoose.Schema(
         },
       },
     ],
-    // interview_details: {
-    //   type: Array,
-    //   default: [],
 
-    // },
     interview_details: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "AssignInterview",
+      type: Array,
+      default: [],
     },
 
     user_type: {

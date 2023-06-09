@@ -1,10 +1,12 @@
+const { default: mongoose } = require("mongoose");
+const { ObjectId } = mongoose.Types;
+
 const { Interviews, AssignInterview } = require("../../../models/interview");
 // const AssignInterview = require("../../../models/interview");
 const Student = require("../../../models/student");
 exports.createInterview = async (req, res, next) => {
   const { title, company, interview_date } = req.body;
 
-  console.log("intBobody", req.body);
   try {
     let newInterview = await Interviews.create({
       title,
@@ -30,21 +32,7 @@ exports.assignInterviewToStudent = async (req, res, next) => {
     // await Company.findOneAndUpdate({_id:req.body.company} , {$addToSet:})
     await Student.findOneAndUpdate(
       { _id: req.body.student },
-      { $addToSet: { interviews: assignedInterview._id } }
-    );
-
-    await Student.findOneAndUpdate(
-      { _id: req.body.student }, // Assuming the student ID is in req.body.studentId
-      {
-        $set: { interview_details: assignedInterview._id }, // Add the assigned interview to interview_details array
-      }
-    );
-
-    await Student.findOneAndUpdate(
-      { _id: req.body.student }, // Assuming the student ID is in req.body.studentId
-      {
-        $set: { interview_details: assignedInterview._id }, // Add the assigned interview to interview_details array
-      }
+      { $push: { interview_details: assignedInterview } }
     );
 
     let interviewDetails = await AssignInterview.findById(assignedInterview._id)
@@ -59,4 +47,48 @@ exports.assignInterviewToStudent = async (req, res, next) => {
   } catch (error) {
     res.status(200).json(error);
   }
+};
+
+exports.updateAssignInterviewToStudent = async (req, res, next) => {
+  const { results, id } = req.body;
+
+  let updatedInterview = await AssignInterview.findOneAndUpdate(
+    { _id: id },
+    { $set: { results: results } }
+  );
+  console.log("CCCCCCCCc", updatedInterview.student);
+
+  let ups = await Student.findOneAndUpdate(
+    { _id: updatedInterview.student, "interview_details._id": new ObjectId(id) },
+    {
+      $set: {
+        "interview_details.$.results": results,
+      },
+    },
+    { new: true }
+  );
+
+  console.log("jjjjj", ups);
+
+  // try {
+  //   let assignedInterview = await AssignInterview.create(req.body);
+  //   // await Company.findOneAndUpdate({_id:req.body.company} , {$addToSet:})
+  //   await Student.findOneAndUpdate(
+  //     { _id: req.body.student }, // Assuming the student ID is in req.body.studentId
+  //     {
+  //       $set: { interview_details: assignedInterview._id }, // Add the assigned interview to interview_details array
+  //     }
+  //   );
+  //   let interviewDetails = await AssignInterview.findById(assignedInterview._id)
+  //     .populate("company", "_id company_name")
+  //     .populate(
+  //       "student",
+  //       "_id first_name last_name email phone college placement_status course_scores"
+  //     )
+  //     .populate("interview", "_id title")
+  //     .exec();
+  //   res.status(200).json(interviewDetails);
+  // } catch (error) {
+  //   res.status(200).json(error);
+  // }
 };
