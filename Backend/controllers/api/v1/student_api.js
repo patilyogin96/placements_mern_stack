@@ -51,13 +51,14 @@ exports.createStudent = async (req, res, next) => {
 };
 
 exports.getAllStudents = async (req, res, next) => {
-  console.log("requestQuery", req.query);
+ 
   const searchQuery = req.query.q;
   const page = req.query.page || 1;
   const limit = req.query.limit || 10;
+  console.log("requestQuery", searchQuery);
   try {
     let allStudents = await Student.find({
-      $or: [{ first_name: { $regex: searchQuery, $options: "i" } }],
+      $or: [{ first_name: { $regex: searchQuery ? searchQuery :"", $options: "i" } }],
     })
       .skip((page - 1) * limit)
       .limit(limit)

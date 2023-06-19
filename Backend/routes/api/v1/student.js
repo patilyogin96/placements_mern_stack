@@ -6,7 +6,7 @@ const requireAuthorization = require("../../../config/middleware");
 const passport = require("passport");
 router.get(
   "/",
-//   passport.authenticate("jwt", { session: false }),
+  // passport.authenticate("jwt", { session: false }),
   studentController.getAllStudents
 );
 router.post("/create-student", studentController.createStudent);

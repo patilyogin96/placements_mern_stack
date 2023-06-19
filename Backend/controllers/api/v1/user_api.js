@@ -103,10 +103,10 @@ exports.loginUser = async (req, res, next) => {
 
         return res.status(200).json(data);
       } else {
-        return res.status(200).json("Password is not matching");
+        return res.status(401).json("Password is not matching");
       }
     } else {
-      return res.status(200).json("User does not exists");
+      return res.status(404).json("User does not exists");
     }
   } catch (error) {
     console.log("********", error);
