@@ -19,8 +19,7 @@ export const authSlice = createSlice({
       state.token = null;
     },
     setStudents: (state, action) => {
-
-      console.log("Payload" , action.payload.students);
+      console.log("Payload", action.payload.students);
       state.students = action.payload.students;
     },
   },
