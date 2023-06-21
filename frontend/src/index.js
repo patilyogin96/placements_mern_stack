@@ -17,10 +17,10 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-import authReducer from './State'
+import authReducer from "./State";
 
 const persistConfig = { key: "root", storage, version: 1 };
-const persistedReducer = persistReducer(persistConfig , authReducer);
+const persistedReducer = persistReducer(persistConfig, authReducer);
 const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
