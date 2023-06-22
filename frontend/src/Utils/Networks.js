@@ -2,14 +2,26 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 
 export var base_url = "http://localhost:8000/";
+let access_token = "";
+let local_json;
 
-const access_token = localStorage.getItem("persist:root");
-console.log("WWWWWW", access_token);
+let local_json_user;
+let local_json_token;
+// const access_token = localStorage.getItem("persist:root");
+// console.log("WWWWWW", access_token);
 
-const local_json = JSON.parse(access_token);
+if (localStorage.hasOwnProperty("persist:root")) {
+  access_token = localStorage.getItem("persist:root");
+  local_json = JSON.parse(access_token);
 
-const local_json_user = JSON.parse(local_json?.user);
-const local_json_token = JSON.parse(local_json?.token);
+  local_json_user = JSON.parse(local_json?.user);
+  local_json_token = JSON.parse(local_json?.token);
+} else {
+  access_token = "";
+  local_json_user = null;
+  local_json_token = null;
+}
+
 // const local_json_token = "scscsc";
 
 var _headers =
