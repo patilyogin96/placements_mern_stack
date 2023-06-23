@@ -7,6 +7,7 @@ import { api_token } from "../../Utils/Networks";
 import { useReducer } from "react";
 import CustomDrawer from "../../Components/CustomDrawer/CustomDrawer";
 import CustomInput from "../../Components/CustomInput/CustomInput";
+import CustomSelect from "../../Components/CustomSelect/CustomSelect";
 
 const initialState = {
   data: [],
@@ -18,13 +19,19 @@ const initialState = {
     college: "",
     user_type: 2,
   },
+  selectListData: {
+    interviewList: [],
+  },
 
   openDrawer: false,
+  buttonSelection: null, //1 for add student , 2 for assign interview
 };
 
 const Students = () => {
   const [state, dispatch] = useReducer(studentsReducer, initialState);
-  const { data, openDrawer, createStudent } = state;
+  const { data, openDrawer, createStudent, buttonSelection, selectListData } =
+    state;
+  const { interviewList } = selectListData;
   console.log("StateMain", state);
 
   const submitCreateStudentForm = (e) => {
@@ -35,7 +42,6 @@ const Students = () => {
         createStudent
       )
       .then((response) => {
-        console.log("CReateStudent", response);
         if (response.status === 201) {
           dispatch({
             type: "closeDrawer",
@@ -52,13 +58,37 @@ const Students = () => {
     api_token
       .get(`api/v1/student/`)
       .then((response) => {
-        console.log("StudentResponse", response);
         dispatch({
           type: "studentList",
           payload: response?.data?.data,
         });
       })
       .catch((err) => {});
+  };
+
+  const assignInterviewForm = () => {
+    return (
+      <>
+        <form>
+          <div className={styles.formContainer}>
+            {/* <div>
+              <CustomSelect title="Select Company" />
+            </div> */}
+            <div>
+              <CustomSelect
+                title="Select Interview"
+                selectList={interviewList}
+                // onChange={}
+              />
+            </div>
+
+            <div>
+              <CustomButton text="Assign" />
+            </div>
+          </div>
+        </form>
+      </>
+    );
   };
 
   const createStudentForm = () => {
@@ -151,9 +181,23 @@ const Students = () => {
     );
   };
 
+  // api function calls
+  const getInterviewList = () => {
+    api_token
+      .get(`api/v1/interview/`)
+      .then((response) => {
+        dispatch({
+          type: "setSelectLists",
+          payload: response.data.data,
+        });
+      })
+      .catch((err) => {});
+  };
+
   // useEffect
   useEffect(() => {
     getAllStudents();
+    getInterviewList();
   }, []);
   return (
     <>
@@ -161,19 +205,43 @@ const Students = () => {
         {/* header */}
         <div className={styles.headerBox}>
           <div>All Students</div>
-          <div>
+          <div className={styles.drwBtnFlex}>
             <div>
               {/* button to open add student drawer */}
               <CustomButton
                 text={"Add Student"}
                 color="primary"
-                onClick={() =>
+                onClick={() => {
                   dispatch({
                     type: "openDrawer",
                     fieldName: "openDrawer",
                     payload: true,
-                  })
-                }
+                  });
+                  dispatch({
+                    type: "buttonType",
+                    fieldName: "buttonSelection",
+                    payload: 1,
+                  });
+                }}
+              />
+            </div>
+            <div>
+              {/* button to open assign interview to student */}
+              <CustomButton
+                text={"Assign Interview"}
+                color="primary"
+                onClick={() => {
+                  dispatch({
+                    type: "openDrawer",
+                    fieldName: "openDrawer",
+                    payload: true,
+                  });
+                  dispatch({
+                    type: "buttonType",
+                    fieldName: "buttonSelection",
+                    payload: 2,
+                  });
+                }}
               />
             </div>
           </div>
@@ -197,9 +265,10 @@ const Students = () => {
               })
             }
             drawerWidth={"30%"}
-            title={"Add Student"}
+            title={buttonSelection === 1 ? "Add Student" : "Assign Interview"}
           >
-            {createStudentForm()}
+            {buttonSelection === 1 && createStudentForm()}
+            {buttonSelection === 2 && assignInterviewForm()}
           </CustomDrawer>
         </div>
       </div>

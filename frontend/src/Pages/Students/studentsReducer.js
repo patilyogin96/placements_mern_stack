@@ -1,5 +1,4 @@
 export const studentsReducer = (state, action) => {
-  console.log("State", state);
   switch (action.type) {
     case "studentList": {
       return {
@@ -17,7 +16,7 @@ export const studentsReducer = (state, action) => {
     }
 
     case "closeDrawer": {
-      state.createStudent = {
+      const resetCreateStudent = {
         first_name: "",
         last_name: "",
         email: "",
@@ -27,6 +26,7 @@ export const studentsReducer = (state, action) => {
 
       return {
         ...state,
+        createStudent: resetCreateStudent,
         [action.fieldName]: action.payload,
       };
     }
@@ -34,6 +34,18 @@ export const studentsReducer = (state, action) => {
       return {
         ...state,
         [action.fieldName]: action.payload,
+      };
+    }
+    case "buttonType": {
+      return {
+        ...state,
+        [action.fieldName]: action.payload,
+      };
+    }
+    case "setSelectLists": {
+      state.selectListData.interviewList = action.payload;
+      return {
+        ...state,
       };
     }
 

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export var base_url = "http://localhost:8000/";
+export var base_url = "http://localhost:8001/";
 let access_token = "";
 let local_json;
 

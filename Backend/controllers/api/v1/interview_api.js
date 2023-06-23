@@ -20,9 +20,15 @@ exports.createInterview = async (req, res, next) => {
 
 exports.getAllInterviews = async (req, res, next) => {
   try {
-    let allInterviews = await Interviews.find({}).populate("company").exec();
+    let allInterviews = await Interviews.find({})
+      .populate({
+        path: "company",
+        select: "company_name -_id", //only sending required keys in company object
+      })
+      .select("title interview_date")
+      .exec();
 
-    res.status(200).json(allInterviews);
+    res.status(200).json({ data: allInterviews });
   } catch (error) {}
 };
 
