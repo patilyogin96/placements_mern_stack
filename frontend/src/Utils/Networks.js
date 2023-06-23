@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useSelector } from "react-redux";
 
 export var base_url = "http://localhost:8000/";
 let access_token = "";

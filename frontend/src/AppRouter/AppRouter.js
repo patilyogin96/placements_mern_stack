@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import Login from "../Pages/Login/Login";
 import PlaceDashboard from "../Pages/PlaceDashboard/PlaceDashboard";
 import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 
 const AppRouter = () => {
   const isAuth = Boolean(useSelector((state) => state.token));
@@ -12,7 +13,10 @@ const AppRouter = () => {
     <Routes>
       <Route strict exact path="/" element={<Login />} />
       <Route strict exact path="/login" element={<Login />} />
-      <Route path="/dashboard/*" element={<PlaceDashboard />} />
+      <Route
+        path="/dashboard/*"
+        element={isAuth ? <PlaceDashboard /> : <Navigate to="/login" />}
+      />
     </Routes>
   );
 };

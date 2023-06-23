@@ -1,10 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./index.module.css";
 import CustomTable from "../../Components/CustomTable/CustomTable";
 import CustomButton from "../../Components/CustomButton/CustomButton";
 import { studentsReducer } from "./studentsReducer";
 import { api_token } from "../../Utils/Networks";
 import { useReducer } from "react";
+import CustomDrawer from "../../Components/CustomDrawer/CustomDrawer";
+import CustomInput from "../../Components/CustomInput/CustomInput";
 
 const initialState = {
   data: [],
@@ -12,10 +14,13 @@ const initialState = {
 
 const Students = () => {
   const [state, dispatch] = useReducer(studentsReducer, initialState);
+  const [openDrw, setOpenDrw] = useState(false);
   const { data } = state;
   console.log("State", state);
 
-  const handleBtnClick = () => {};
+  const handleBtnClick = () => {
+    setOpenDrw(true);
+  };
   const getAllStudents = () => {
     api_token
       .get(`api/v1/student/`)
@@ -54,6 +59,23 @@ const Students = () => {
         {/* Table */}
         <div className={styles.tableBox}>
           <CustomTable data={data} columns={columns} />
+        </div>
+
+        {/* drawer component code */}
+        <div>
+          <CustomDrawer
+            open={openDrw}
+            onClose={() => setOpenDrw((prev) => !prev)}
+            drawerWidth={"30%"}
+            title={"Add Student"}
+          >
+            <CustomInput
+              label={"First Name"}
+              size="small"
+              maxLength={5}
+              style={{ width: "100%" }}
+            />
+          </CustomDrawer>
         </div>
       </div>
     </>
