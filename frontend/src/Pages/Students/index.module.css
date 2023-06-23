@@ -2,9 +2,20 @@
   /* border: 1px solid black; */
   padding: 2px;
 }
-.headerBox{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+.headerBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.drwBtnFlex {
+  display: flex;
+  gap: 10px;
 }

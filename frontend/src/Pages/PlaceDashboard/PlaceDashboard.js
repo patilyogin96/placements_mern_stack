@@ -22,6 +22,7 @@ import { useLocation } from "react-router-dom";
 import Companies from "../Companies/Companies";
 import Students from "../Students/Students";
 import Interviews from "../Interviews/Interview";
+import CustomButton from "../../Components/CustomButton/CustomButton";
 
 const drawerWidth = 240;
 
@@ -65,6 +66,9 @@ const PlaceDashboard = () => {
             <Toolbar>
               <Typography variant="h6" noWrap component="div">
                 JOB.COM
+              </Typography>
+              <Typography>
+                <CustomButton text={"Log Out"} onClick={handleLogout} />
               </Typography>
             </Toolbar>
           </AppBar>
