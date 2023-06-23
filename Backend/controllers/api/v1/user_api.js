@@ -67,8 +67,6 @@ exports.registerUser = async (req, res, next) => {
 
 // login functionality of a user
 exports.loginUser = async (req, res, next) => {
-
-
   const email = req.body.email;
   const phone = req.body.phone;
   const password = req.body.password;
@@ -78,7 +76,7 @@ exports.loginUser = async (req, res, next) => {
 
     if (user) {
       let truePassword = await bcrypt.compare(password, user.password);
-     
+
       if (truePassword) {
         const user_state = {
           _id: user._id,
@@ -96,7 +94,7 @@ exports.loginUser = async (req, res, next) => {
           data: {
             user_state,
             token: jwt.sign(user.toJSON(), "loginkeys", {
-              expiresIn: "100000",
+              expiresIn: 15 * 60,
             }),
           },
         };

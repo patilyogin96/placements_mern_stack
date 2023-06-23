@@ -29,9 +29,7 @@ exports.createStudent = async (req, res, next) => {
 
         let data = {
           message: "Student Created successfully",
-          data: {
-            newStudent,
-          },
+          newStudent,
         };
 
         return res.status(201).json(data);
@@ -39,26 +37,38 @@ exports.createStudent = async (req, res, next) => {
         let data = {
           error,
         };
-        return res.status(201).json(data);
+        return res.status(400).json(data);
       }
     } else {
       let data = {
         message: "Student is already registered",
       };
-      return res.status(200).json(data);
+      return res.status(400).json(data);
     }
   } catch (error) {}
 };
 
 exports.getAllStudents = async (req, res, next) => {
- 
   const searchQuery = req.query.q;
   const page = req.query.page || 1;
+  // total records in one page
   const limit = req.query.limit || 10;
   console.log("requestQuery", searchQuery);
   try {
+    const total_count = await Student.countDocuments({
+      $or: [
+        {
+          first_name: { $regex: searchQuery ? searchQuery : "", $options: "i" },
+        },
+      ],
+    });
+
     let allStudents = await Student.find({
-      $or: [{ first_name: { $regex: searchQuery ? searchQuery :"", $options: "i" } }],
+      $or: [
+        {
+          first_name: { $regex: searchQuery ? searchQuery : "", $options: "i" },
+        },
+      ],
     })
       .skip((page - 1) * limit)
       .limit(limit)
@@ -72,8 +82,13 @@ exports.getAllStudents = async (req, res, next) => {
     // let allStudents = await Student.find({})
     //   .populate("interview_details")
     //   .exec();
-
-    return res.status(200).json(allStudents);
+    // returning with paginations details
+    return res.status(200).json({
+      total_count,
+      page_number: page,
+      page_size: limit,
+      data: allStudents,
+    });
   } catch (error) {
     return res.status(400).json(error);
   }
