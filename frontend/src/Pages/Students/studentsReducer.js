@@ -43,7 +43,33 @@ export const studentsReducer = (state, action) => {
       };
     }
     case "setSelectLists": {
-      state.selectListData.interviewList = action.payload;
+      if (action?.fieldName === "student") {
+        // let studentList = state.selectListData.studentList;
+        // studentList = action.payload;
+        state.selectListData.studentList = action.payload;
+      } else {
+        state.selectListData.interviewList = action.payload;
+      }
+
+      return {
+        ...state,
+      };
+    }
+    case "selectFromListing": {
+      if (action?.fieldName === "student") {
+        // let studentList = state.selectListData.studentList;
+        // studentList = action.payload;
+        state.selectListData.selectedStudents =
+          typeof action.payload === "string"
+            ? action.payload.split(",")
+            : action.payload;
+      } else {
+        state.selectListData.selectedInterviews =
+          typeof action.payload === "string"
+            ? action.payload.split(",")
+            : action.payload;
+      }
+
       return {
         ...state,
       };

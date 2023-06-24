@@ -21,6 +21,9 @@ const initialState = {
   },
   selectListData: {
     interviewList: [],
+    studentList: [],
+    selectedInterviews: [],
+    selectedStudents: [],
   },
 
   openDrawer: false,
@@ -31,8 +34,25 @@ const Students = () => {
   const [state, dispatch] = useReducer(studentsReducer, initialState);
   const { data, openDrawer, createStudent, buttonSelection, selectListData } =
     state;
-  const { interviewList } = selectListData;
-  console.log("StateMain", state);
+  const { interviewList, studentList, selectedStudents, selectedInterviews } =
+    selectListData;
+  console.log("StateMain", selectedStudents, selectedInterviews);
+
+  const handleAssignInterview = (e) => {
+    e.preventDefault();
+
+    let data = {
+      student: selectedStudents[0],
+      interview: selectedInterviews[0],
+      company: "6481474d465ad71f947edc0b", //hardcoded
+    };
+    api_token
+      .post(`api/v1/interview/assign-interview`, data)
+      .then((response) => {
+        console.log("AssignRespnse", response);
+      })
+      .catch((err) => {});
+  };
 
   const submitCreateStudentForm = (e) => {
     e.preventDefault();
@@ -53,23 +73,10 @@ const Students = () => {
       .catch((err) => {});
   };
 
-  // fetch students from api through function
-  const getAllStudents = () => {
-    api_token
-      .get(`api/v1/student/`)
-      .then((response) => {
-        dispatch({
-          type: "studentList",
-          payload: response?.data?.data,
-        });
-      })
-      .catch((err) => {});
-  };
-
   const assignInterviewForm = () => {
     return (
       <>
-        <form>
+        <form onSubmit={handleAssignInterview}>
           <div className={styles.formContainer}>
             {/* <div>
               <CustomSelect title="Select Company" />
@@ -78,12 +85,33 @@ const Students = () => {
               <CustomSelect
                 title="Select Interview"
                 selectList={interviewList}
-                // onChange={}
+                onChange={(e) =>
+                  dispatch({
+                    type: "selectFromListing",
+                    fieldName: "interview",
+                    payload: e.target.value,
+                  })
+                }
+                listName={selectedInterviews}
+              />
+            </div>
+            <div>
+              <CustomSelect
+                title="Select Student"
+                selectList={studentList}
+                onChange={(e) =>
+                  dispatch({
+                    type: "selectFromListing",
+                    fieldName: "student",
+                    payload: e.target.value,
+                  })
+                }
+                listName={selectedStudents}
               />
             </div>
 
             <div>
-              <CustomButton text="Assign" />
+              <CustomButton type="submit" text="Assign" />
             </div>
           </div>
         </form>
@@ -91,6 +119,7 @@ const Students = () => {
     );
   };
 
+  // create student form
   const createStudentForm = () => {
     return (
       <>
@@ -179,6 +208,44 @@ const Students = () => {
         </form>
       </>
     );
+  };
+
+  // fetch students from api through function
+  const getAllStudents = () => {
+    api_token
+      .get(`api/v1/student/`)
+      .then((response) => {
+        let modifiedList = [];
+        let modifiedListForTable = [];
+        response?.data?.data?.map((e, i) => {
+          let modifiedObj = {
+            title: e?.first_name + " " + e?.last_name,
+            _id: e?._id,
+          };
+          let modifiedTableObj = {
+            name: e?.first_name + " " + e?.last_name,
+            phone: e?.phone,
+            email: e?.email,
+            assigned_interview:
+              e?.interview_details.length !== 0 ? "true" : "false",
+            _id: e?._id,
+          };
+          modifiedList.push(modifiedObj);
+          modifiedListForTable.push(modifiedTableObj);
+        });
+
+        dispatch({
+          type: "setSelectLists",
+          fieldName: "student",
+          payload: modifiedList,
+        });
+
+        dispatch({
+          type: "studentList",
+          payload: modifiedListForTable,
+        });
+      })
+      .catch((err) => {});
   };
 
   // api function calls
@@ -282,6 +349,7 @@ const columns = [
   { id: "name", label: "Name" },
   { id: "phone", label: "Phone" },
   { id: "email", label: "Email" },
+  { id: "assigned_interview", label: "Interview Assigned" },
   { id: "", label: "Placement Status" },
   // Add more columns as needed
 ];

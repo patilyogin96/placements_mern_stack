@@ -39,7 +39,7 @@ function getStyles(name, personName, theme) {
   };
 }
 
-const CustomSelect = ({ title, selectList, onChange }) => {
+const CustomSelect = ({ title, selectList, onChange, listName }) => {
   const theme = useTheme();
   const [personName, setPersonName] = React.useState([]);
 
@@ -61,8 +61,8 @@ const CustomSelect = ({ title, selectList, onChange }) => {
             labelId="demo-multiple-name-label"
             id="demo-multiple-name"
             multiple
-            value={personName}
-            onChange={handleChange}
+            value={listName}
+            onChange={onChange}
             input={<OutlinedInput label={title} />}
             MenuProps={MenuProps}
           >
