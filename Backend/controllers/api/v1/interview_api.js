@@ -6,6 +6,7 @@ const { Interviews, AssignInterview } = require("../../../models/interview");
 const Student = require("../../../models/student");
 exports.createInterview = async (req, res, next) => {
   const { title, company, interview_date } = req.body;
+  console.log("REqBODYIN", req.body);
 
   try {
     let newInterview = await Interviews.create({
