@@ -19,3 +19,11 @@
   display: flex;
   gap: 10px;
 }
+
+
+.filterContainer {
+  border: 1px solid red;
+  padding: 2px;
+  display: flex;
+  column-gap: 5px;
+}

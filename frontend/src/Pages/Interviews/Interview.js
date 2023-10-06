@@ -8,6 +8,7 @@ import { interviewReducer } from "./interviewReducer";
 import CustomButton from "../../Components/CustomButton/CustomButton";
 import { Typography } from "@mui/material";
 import { api_token } from "../../Utils/Networks";
+import CreateInterview from "./CreateInterview";
 
 const initialState = {
   data: [],
@@ -17,7 +18,16 @@ const Interview = () => {
   const [state, dispatch] = useReducer(interviewReducer, initialState);
   const { data, openDrawer } = state;
 
-  const getAllInterviews = () => {
+  const handleCloseDrawer = () => {
+    console.log("llll");
+    dispatch({
+      type: "closeDrawer",
+      fieldName: "openDrawer",
+      payload: false,
+    });
+  };
+
+  const getAllInterviews = (query, cb) => {
     api_token
       .get(`api/v1/interview/`)
       .then((response) => {
@@ -37,6 +47,8 @@ const Interview = () => {
             type: "interviewList",
             payload: modifiedData,
           });
+
+          cb();
         }
       })
       .catch((err) => {});
@@ -57,13 +69,13 @@ const Interview = () => {
               <CustomButton
                 text={"Create Interview"}
                 color="primary"
-                // onClick={() =>
-                //   dispatch({
-                //     type: "openDrawer",
-                //     fieldName: "openDrawer",
-                //     payload: true,
-                //   })
-                // }
+                onClick={() =>
+                  dispatch({
+                    type: "openDrawer",
+                    fieldName: "openDrawer",
+                    payload: true,
+                  })
+                }
               />
             </div>
             <div>
@@ -92,17 +104,14 @@ const Interview = () => {
         <div>
           <CustomDrawer
             open={openDrawer}
-            onClose={() =>
-              dispatch({
-                type: "closeDrawer",
-                fieldName: "openDrawer",
-                payload: false,
-              })
-            }
-            drawerWidth={30}
-            title={"Add Student"}
+            onClose={handleCloseDrawer}
+            drawerWidth={"30%"}
+            title={"Create Interview"}
           >
-            "Add INterview"
+            <CreateInterview
+              getAllInterviews={getAllInterviews}
+              handleCloseDrawer={handleCloseDrawer}
+            />
           </CustomDrawer>
         </div>
       </div>

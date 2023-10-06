@@ -23,6 +23,7 @@ import Companies from "../Companies/Companies";
 import Students from "../Students/Students";
 import Interviews from "../Interviews/Interview";
 import CustomButton from "../../Components/CustomButton/CustomButton";
+import Dashboard from "../Dashboard/Dashboard";
 
 const drawerWidth = 240;
 
@@ -87,7 +88,7 @@ const PlaceDashboard = () => {
             <Toolbar />
             <Divider />
             <List>
-              {["Companies", "Interviews", "Students"].map((text, index) => (
+              {["Dashboard", "Interviews", "Students"].map((text, index) => (
                 <ListItem
                   key={text}
                   disablePadding
@@ -111,6 +112,7 @@ const PlaceDashboard = () => {
             <Toolbar />
             {/* Mains ROutes For mains content */}
             <Routes>
+              <Route strict exact path="/dashboard" element={<Dashboard />} />
               <Route strict exact path="/companies" element={<Companies />} />
               <Route strict exact path="/interviews" element={<Interviews />} />
               <Route path="/students" element={<Students />} />

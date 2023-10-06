@@ -30,48 +30,26 @@ const names = [
   "Kelly Snyder",
 ];
 
-function getStyles(name, personName, theme) {
-  return {
-    fontWeight:
-      personName.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
-
-const CustomSelect = ({ title, selectList, onChange, listName }) => {
+const CustomSelect = ({ title, selectList, onChange, listName, name }) => {
   const theme = useTheme();
-  const [personName, setPersonName] = React.useState([]);
 
-  const handleChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setPersonName(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
-  };
   return (
     <>
       <div>
-        <FormControl sx={{ m: 1, width: 300 }}>
+        <FormControl sx={{ width: 300 }}>
           <InputLabel id="demo-multiple-name-label">{title}</InputLabel>
           <Select
             labelId="demo-multiple-name-label"
             id="demo-multiple-name"
-            multiple
+            name={name}
+            // multiple
             value={listName}
             onChange={onChange}
             input={<OutlinedInput label={title} />}
             MenuProps={MenuProps}
           >
             {selectList.map((singleItem) => (
-              <MenuItem
-                key={singleItem?._id}
-                value={singleItem?._id}
-                style={getStyles(singleItem?.title, personName, theme)}
-              >
+              <MenuItem key={singleItem?._id} value={singleItem?._id}>
                 {singleItem?.title}
               </MenuItem>
             ))}

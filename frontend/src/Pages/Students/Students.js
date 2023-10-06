@@ -8,6 +8,7 @@ import { useReducer } from "react";
 import CustomDrawer from "../../Components/CustomDrawer/CustomDrawer";
 import CustomInput from "../../Components/CustomInput/CustomInput";
 import CustomSelect from "../../Components/CustomSelect/CustomSelect";
+import CustomSearchFilter from "../../Components/CustomSearchFilter/CustomSearchFilter";
 
 const initialState = {
   data: [],
@@ -36,6 +37,8 @@ const Students = () => {
     state;
   const { interviewList, studentList, selectedStudents, selectedInterviews } =
     selectListData;
+
+  const [companyListing, setCompanyListing] = useState([]);
   console.log("StateMain", selectedStudents, selectedInterviews);
 
   const handleAssignInterview = (e) => {
@@ -229,6 +232,10 @@ const Students = () => {
             assigned_interview:
               e?.interview_details.length !== 0 ? "true" : "false",
             _id: e?._id,
+            placement_status:
+              e?.placement_status?.results == 0
+                ? "Not Assigned"
+                : place_status[e?.placement_status?.results - 1],
           };
           modifiedList.push(modifiedObj);
           modifiedListForTable.push(modifiedTableObj);
@@ -314,7 +321,33 @@ const Students = () => {
           </div>
         </div>
         {/* search and other filters */}
-        <div className={styles.filterBox}></div>
+        <div className={styles.filterContainer}>
+          <div>
+            <CustomSearchFilter />
+          </div>
+
+          <div>
+            <CustomSelect
+              title={"Company"}
+              selectList={companyListing}
+              name="company"
+              // value={interviewData?.company}
+              // onChange={handleChange}
+            />
+          </div>
+          <div>
+            <CustomSelect
+              title={"Status"}
+              selectList={companyListing}
+              name="company"
+              // value={interviewData?.company}
+              // onChange={handleChange}
+            />
+          </div>
+          <div>
+            <CustomButton text={"Export"} />
+          </div>
+        </div>
         {/* Table */}
         <div className={styles.tableBox}>
           <CustomTable data={data} columns={columns} />
@@ -350,6 +383,9 @@ const columns = [
   { id: "phone", label: "Phone" },
   { id: "email", label: "Email" },
   { id: "assigned_interview", label: "Interview Assigned" },
-  { id: "", label: "Placement Status" },
+  { id: "placement_status", label: "Placement Status" },
+  { id: "actions", label: "Actions" },
   // Add more columns as needed
 ];
+
+const place_status = ["Placed", "Not Placed", "On Hold"];
