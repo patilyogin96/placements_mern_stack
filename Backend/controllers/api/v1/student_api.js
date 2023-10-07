@@ -1,4 +1,7 @@
 const Student = require("../../../models/student");
+const json2xls = require("json2xls");
+const path = require("path");
+const fs = require("fs");
 
 exports.createStudent = async (req, res, next) => {
   try {
@@ -91,5 +94,42 @@ exports.getAllStudents = async (req, res, next) => {
     });
   } catch (error) {
     return res.status(400).json(error);
+  }
+};
+
+exports.downloadReport = async (req, res, next) => {
+  try {
+    let allStudents = await Student.find(
+      {},
+      "first_name last_name college interview_details -_id"
+    );
+    let report = "Student name, College ,Interview ";
+    let studentData1 = "";
+    // const xls = json2xls(allStudents);
+
+    for (let student of allStudents) {
+      studentData1 =
+        `${student.first_name || ""} ${student.last_name || ""}` +
+        "," +
+        `${student.college}`;
+      report += "\n" + studentData1;
+    }
+
+    console.log("REport", report);
+
+    fs.writeFile("uploads/studentsReport.csv", report, function (err, data) {
+      if (err) {
+        console.log(err);
+        return res.redirect("back");
+      }
+      return res.json({ downloadUrl: "uploads/studentsReport.csv" });
+    });
+    // Set response headers for downloading the Excel file
+    // res.setHeader("Content-Type", "application/vnd.openxmlformats");
+    // res.setHeader("Content-Disposition", "attachment; filename=students.xlsx");
+    // res.end(xls, "binary");
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
   }
 };

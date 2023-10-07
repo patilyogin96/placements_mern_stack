@@ -1,8 +1,6 @@
 const mongoose = require("mongoose");
 
-mongoose.connect(
- "mongodb+srv://96yoginpatil:yoginsecure@cluster0.087qxnv.mongodb.net/placement"
-);
+mongoose.connect(process.env.MONGO_URI);
 
 const db = mongoose.connection;
 

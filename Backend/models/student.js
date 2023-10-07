@@ -50,8 +50,10 @@ const studentSchema = new mongoose.Schema(
     ],
 
     interview_details: {
-      type: Array,
-      default: [],
+      interview_name: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Interview",
+      },
     },
 
     user_type: {

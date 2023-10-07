@@ -40,6 +40,11 @@ const Students = () => {
 
   const [companyListing, setCompanyListing] = useState([]);
   console.log("StateMain", selectedStudents, selectedInterviews);
+  const [filterData, setFilterData] = useState({
+    q: "",
+    company: "",
+    status: "",
+  });
 
   const handleAssignInterview = (e) => {
     e.preventDefault();
@@ -214,9 +219,9 @@ const Students = () => {
   };
 
   // fetch students from api through function
-  const getAllStudents = () => {
+  const getAllStudents = (query) => {
     api_token
-      .get(`api/v1/student/`)
+      .get(`api/v1/student/`, { params: { ...query } })
       .then((response) => {
         let modifiedList = [];
         let modifiedListForTable = [];
@@ -255,6 +260,17 @@ const Students = () => {
       .catch((err) => {});
   };
 
+  const handleDownloadExel = () => {
+    api_token
+      .get(`api/v1/student/download-report`)
+      .then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        console.log("ResDDDD", url);
+        window.open(url, "_blank");
+      })
+      .catch((err) => {});
+  };
+
   // api function calls
   const getInterviewList = () => {
     api_token
@@ -268,9 +284,18 @@ const Students = () => {
       .catch((err) => {});
   };
 
+  useEffect(() => {
+    const timeOut = setTimeout(() => {
+      let obj = filterData;
+
+      getAllStudents(obj);
+    }, 600);
+
+    return () => clearTimeout(timeOut);
+  }, [filterData?.q]);
+
   // useEffect
   useEffect(() => {
-    getAllStudents();
     getInterviewList();
   }, []);
   return (
@@ -323,7 +348,15 @@ const Students = () => {
         {/* search and other filters */}
         <div className={styles.filterContainer}>
           <div>
-            <CustomSearchFilter />
+            <CustomSearchFilter
+              value={filterData?.q}
+              onChange={(v) =>
+                setFilterData({
+                  ...filterData,
+                  q: v,
+                })
+              }
+            />
           </div>
 
           <div>
@@ -345,7 +378,7 @@ const Students = () => {
             />
           </div>
           <div>
-            <CustomButton text={"Export"} />
+            <CustomButton onClick={handleDownloadExel} text={"Export"} />
           </div>
         </div>
         {/* Table */}

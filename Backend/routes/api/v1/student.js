@@ -9,6 +9,7 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   studentController.getAllStudents
 );
+router.get("/download-report", studentController.downloadReport);
 router.post("/create-student", studentController.createStudent);
 
 module.exports = router;

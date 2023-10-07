@@ -2,9 +2,9 @@
   "name": "placement",
   "version": "1.0.0",
   "description": "Backend for placement cell project",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "yogin patil",
@@ -14,8 +14,10 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
+    "json2xls": "^0.1.2",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.2.2",
     "passport": "^0.6.0",
